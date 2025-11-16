@@ -1,0 +1,276 @@
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "provenance": [],
+      "authorship_tag": "ABX9TyPy0gM8YEISG/2lK3YhIb+V",
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    },
+    "language_info": {
+      "name": "python"
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/suryatejaganji/DATA-ANALYSIS-USING-PYTHON/blob/main/Week-1_Monday_28-07-25\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 2,
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "L6Or83OnKMVl",
+        "outputId": "378f6faf-c3a5-4e84-ad55-943152e4a71f"
+      },
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "   Marks    Category\n",
+            "0     35        Fail\n",
+            "1     48  Borderline\n",
+            "2     52        Pass\n",
+            "3     67        Pass\n",
+            "4     29        Fail\n",
+            "5     45  Borderline\n",
+            "6     88        Pass\n",
+            "7     73        Pass\n",
+            "8     41  Borderline\n",
+            "9     56        Pass\n"
+          ]
+        }
+      ],
+      "source": [
+        "import pandas as pd\n",
+        "\n",
+        "\n",
+        "\n",
+        "marks = [35, 48, 52, 67, 29, 45, 88, 73, 41, 56]\n",
+        "\n",
+        "\n",
+        "def classify_score(score):\n",
+        "    if score < 40:\n",
+        "        return \"Fail\"\n",
+        "    elif 40 <= score <= 49:\n",
+        "        return \"Borderline\"\n",
+        "    else:\n",
+        "        return \"Pass\"\n",
+        "\n",
+        "\n",
+        "categories = [classify_score(m) for m in marks]\n",
+        "\n",
+        "\n",
+        "df = pd.DataFrame({\n",
+        "    \"Marks\": marks,\n",
+        "    \"Category\": categories\n",
+        "})\n",
+        "\n",
+        "df[\"Category\"] = pd.Categorical(\n",
+        "    df[\"Category\"],\n",
+        "    categories=[\"Fail\", \"Borderline\", \"Pass\"],\n",
+        "    ordered=True\n",
+        ")\n",
+        "\n",
+        "\n",
+        "print(df)"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "\n",
+        "freq_count = df[\"Category\"].value_counts()\n",
+        "print(\"Frequency Count:\")\n",
+        "print(freq_count)\n",
+        "print(\"\\n\")\n",
+        "\n",
+        "\n",
+        "percentage = df[\"Category\"].value_counts(normalize=True) * 100\n",
+        "print(\"Percentage Distribution:\")\n",
+        "print(percentage.round(2))\n",
+        "print(\"\\n\")\n",
+        "\n",
+        "\n",
+        "print(\"Data Type of 'Category' Column:\")\n",
+        "print(df[\"Category\"].dtype)\n",
+        "print(\"\\n\")\n",
+        "\n",
+        "print(\"Complete DataFrame Info:\")\n",
+        "print(df.info())\n"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "EhLxPVnYKb9G",
+        "outputId": "47b3db48-00c5-4ead-ed33-5d8360da97ca"
+      },
+      "execution_count": 3,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Frequency Count:\n",
+            "Category\n",
+            "Pass          5\n",
+            "Borderline    3\n",
+            "Fail          2\n",
+            "Name: count, dtype: int64\n",
+            "\n",
+            "\n",
+            "Percentage Distribution:\n",
+            "Category\n",
+            "Pass          50.0\n",
+            "Borderline    30.0\n",
+            "Fail          20.0\n",
+            "Name: proportion, dtype: float64\n",
+            "\n",
+            "\n",
+            "Data Type of 'Category' Column:\n",
+            "category\n",
+            "\n",
+            "\n",
+            "Complete DataFrame Info:\n",
+            "<class 'pandas.core.frame.DataFrame'>\n",
+            "RangeIndex: 10 entries, 0 to 9\n",
+            "Data columns (total 2 columns):\n",
+            " #   Column    Non-Null Count  Dtype   \n",
+            "---  ------    --------------  -----   \n",
+            " 0   Marks     10 non-null     int64   \n",
+            " 1   Category  10 non-null     category\n",
+            "dtypes: category(1), int64(1)\n",
+            "memory usage: 354.0 bytes\n",
+            "None\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "import numpy as np\n",
+        "\n",
+        "\n",
+        "mean_marks = np.mean(df[\"Marks\"])\n",
+        "median_marks = np.median(df[\"Marks\"])\n",
+        "std_marks = np.std(df[\"Marks\"])\n",
+        "\n",
+        "print(\"Statistical Metrics:\")\n",
+        "print(f\"Mean Marks: {mean_marks:.2f}\")\n",
+        "print(f\"Median Marks: {median_marks:.2f}\")\n",
+        "print(f\"Standard Deviation: {std_marks:.2f}\")\n",
+        "print(\"\\n\")\n",
+        "\n",
+        "\n",
+        "at_risk = df[df[\"Category\"].isin([\"Fail\", \"Borderline\"])].shape[0]\n",
+        "\n",
+        "print(f\"Number of Students At Risk (Fail + Borderline): {at_risk}\")\n"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "3niLRN0BKn8M",
+        "outputId": "dc9a2681-6dbd-42ec-b178-b834e24293c4"
+      },
+      "execution_count": 4,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Statistical Metrics:\n",
+            "Mean Marks: 53.40\n",
+            "Median Marks: 50.00\n",
+            "Standard Deviation: 17.21\n",
+            "\n",
+            "\n",
+            "Number of Students At Risk (Fail + Borderline): 5\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "import pandas as pd\n",
+        "import matplotlib.pyplot as plt\n",
+        "\n",
+        "\n",
+        "\n",
+        "\n",
+        "pass_threshold = int(input(\"Enter Pass Threshold (default = 50): \") or 50)\n",
+        "borderline_threshold = int(input(\"Enter Borderline Lower Limit (default = 40): \") or 40)\n",
+        "\n",
+        "\n",
+        "marks = [35, 48, 52, 67, 29, 45, 88, 73, 41, 56]\n",
+        "\n",
+        "\n",
+        "\n",
+        "\n",
+        "def classify_dynamic(score):\n",
+        "    if score < borderline_threshold:\n",
+        "        return \"Fail\"\n",
+        "    elif borderline_threshold <= score < pass_threshold:\n",
+        "        return \"Borderline\"\n",
+        "    else:\n",
+        "        return \"Pass\"\n",
+        "\n",
+        "\n",
+        "categories = [classify_dynamic(m) for m in marks]\n",
+        "\n",
+        "\n",
+        "df = pd.DataFrame({\n",
+        "    \"Marks\": marks,\n",
+        "    \"Category\": categories\n",
+        "})\n",
+        "\n",
+        "\n",
+        "df[\"Category\"] = pd.Categorical(\n",
+        "    df[\"Category\"],\n",
+        "    categories=[\"Fail\", \"Borderline\", \"Pass\"],\n",
+        "    ordered=True\n",
+        ")\n",
+        "\n",
+        "print(\"\\n=== STUDENT PERFORMANCE REPORT ===\\n\")\n",
+        "print(df)\n",
+        "print(\"\\nCategory Frequency:\\n\", df[\"Category\"].value_counts())\n",
+        "print(\"\\nPercentage Distribution (%):\\n\", (df[\"Category\"].value_counts(normalize=True) * 100).round(2))\n",
+        "\n",
+        "\n",
+        "\n",
+        "\n",
+        "plt.figure(figsize=(7,5))\n",
+        "df[\"Category\"].value_counts().plot(kind='bar')\n",
+        "\n",
+        "plt.title(\"Distribution of Students Across Categories (Dynamic Thresholds)\")\n",
+        "plt.xlabel(\"Category\")\n",
+        "plt.ylabel(\"Number of Students\")\n",
+        "plt.grid(axis='y', linestyle='--')\n",
+        "\n",
+        "plt.show()"
+      ],
+      "metadata": {
+        "id": "MKhvEFElK0sc"
+      },
+      "execution_count": null,
+      "outputs": []
+    }
+  ]
+}
